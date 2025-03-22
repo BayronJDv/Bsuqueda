@@ -40,7 +40,6 @@ public class Gui extends JFrame{
         crearGui();
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setBackground(Color.DARK_GRAY);
         
     }
     
@@ -49,7 +48,7 @@ public class Gui extends JFrame{
         mapa = new JPanel(new GridLayout(10, 10));
         mapa.setPreferredSize(new Dimension(500, 500));
         
-        
+        //paneles de adorno 
         panelnorte = new JPanel();
         panelnorte.setBackground(Color.DARK_GRAY);
         panelnorte.setPreferredSize(new Dimension(500,50));
@@ -57,12 +56,14 @@ public class Gui extends JFrame{
         panelsur = new JPanel();
         panelsur.setBackground(Color.DARK_GRAY);
         panelsur.setPreferredSize(new Dimension(500,50));
+        
+        
         // panel de control 
         panelControl = new JPanel();
         panelControl.setLayout(new BoxLayout(panelControl, BoxLayout.Y_AXIS));
         panelControl.setPreferredSize(new Dimension(200, 400));
         
-        JLabel labelAlgoritmo = new JLabel("Selecciona algoritmo:");
+        JLabel labelAlgoritmo = new JLabel("Selecciona un tipo algoritmo:");
         String[] algoritmos = {"B x Amplitud", "B x Profundidad", "A*"};
         JComboBox<String> comboAlgoritmo = new JComboBox<>(algoritmos);
         comboAlgoritmo.setMaximumSize(new Dimension(200, 100)); 
