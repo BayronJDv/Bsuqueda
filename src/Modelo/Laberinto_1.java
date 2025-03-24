@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+
 public class Laberinto_1 {
 
     int filas = 10;

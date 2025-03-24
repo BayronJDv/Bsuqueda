@@ -155,13 +155,14 @@ public class Gui extends JFrame{
                      comboAlgoritmo.addItem(elemento);
                  }
 
-                 comboAlgoritmo.setSelectedIndex(0);  // Seleccionar el primer elemento por defecto
+                 comboAlgoritmo.setSelectedIndex(1);  // Seleccionar el primer elemento por defecto
              }
              if (e.getSource() == botonBuscar) {
                  String eleccion = (String) comboAlgoritmo.getSelectedItem();
                  switch (eleccion) {
-                     case "B x Profundidad" ->
-                         Controlador.aplicarbfs();
+                     case "B x Profundidad" ->{
+                         Controlador.aplicarbfs(areaTexto);
+                         botonrecorrido.setEnabled(true);}
                      default ->
                          throw new AssertionError();
                  }

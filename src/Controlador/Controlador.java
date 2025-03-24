@@ -8,14 +8,17 @@ import java.io.File;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Controlador {
     static Gui gui;
-    static Laberinto_1 lab;
+    static Laberinto_1 miLab;
     
     public static void iniciar(){
         
+        miLab = new Laberinto_1();
+
         JOptionPane.showMessageDialog(
                 null,
                 "Por favor, seleccione el archivo del laberinto (formato .txt).",
@@ -29,11 +32,10 @@ public class Controlador {
         int returnValue = fileChooser.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            Laberinto_1 lab = new Laberinto_1();
-            lab.leertxt(selectedFile);
-            lab.imprimirMatriz();
+            miLab.leertxt(selectedFile);
+            miLab.imprimirMatriz();
             Gui interfaz = new Gui();
-            interfaz.pintarlab(lab);
+            interfaz.pintarlab(miLab);
             
             /*
             nodo ultimo = lab.aplicarbfs();
@@ -53,7 +55,25 @@ public class Controlador {
         }
     }
     
-    public static void aplicarbfs(){
-        System.out.println("hello ");
+    public static void aplicarbfs(JTextArea area){
+        area.setText("");
+        nodo ultimo = miLab.aplicarbfs();
+        if (ultimo != null){
+           miLab.recuprarruta(ultimo);
+           List<String> coordenadas = miLab.coordenadasRuta();
+           System.out.println("\nCoordenadas en orden:");
+           area.append("Coordenadas obtenidas:");
+           for (String coordenada : coordenadas) {
+                System.out.println(coordenada);
+                area.append("\n"+coordenada);
+                }
+           area.append("\n el algoritmo se ejecuto de maneara correcta "
+                   + "\n puede visualizar la ruta ");
+           
+           miLab.imprimirMatriz();
+           }else{
+           System.out.println("No se encontró ruta, está mal.");
+           area.append("No se encontro la ruta; debe haber algun error");
+        }
     }
 }
