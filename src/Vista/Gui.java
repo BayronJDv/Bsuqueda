@@ -15,6 +15,7 @@ import javax.swing.border.Border;
 import Modelo.Laberinto_1;
 import java.awt.GridLayout;
 import java.awt.Image;
+import Controlador.Controlador;
 
 /**
  *
@@ -29,8 +30,15 @@ public class Gui extends JFrame{
     "src/Vista/images/campo.png",
     "src/Vista/images/paquete.png"
 };
-
+    String[] tipo = {"Informada", "No Informada"};
+    String[] algoritmosNI = {"B x Amplitud", "B x Profundidad", "B x Csoto"};
+    String[] algoritmosI = {"Avara", "A*"};
+    
     JPanel mapa;JPanel panelControl;JPanel panelnorte;JPanel panelsur;
+    JButton botonBuscar;JButton botonrecorrido;
+    
+    JComboBox<String> comboTipo;
+    JComboBox<String> comboAlgoritmo;
     
     public Gui(){
         
@@ -63,19 +71,36 @@ public class Gui extends JFrame{
         panelControl.setLayout(new BoxLayout(panelControl, BoxLayout.Y_AXIS));
         panelControl.setPreferredSize(new Dimension(200, 400));
         
+        JLabel labelTipo = new JLabel("seleccione el tipo de busqueda");
         JLabel labelAlgoritmo = new JLabel("Selecciona un tipo algoritmo:");
-        String[] algoritmos = {"B x Amplitud", "B x Profundidad", "A*"};
-        JComboBox<String> comboAlgoritmo = new JComboBox<>(algoritmos);
+        
+  
+        
+        comboTipo = new JComboBox<>(tipo);
+        comboTipo.setMaximumSize(new Dimension(200, 100)); 
+        comboAlgoritmo = new JComboBox<>(algoritmosI);
         comboAlgoritmo.setMaximumSize(new Dimension(200, 100)); 
-        JButton botonBuscar = new JButton("aplicar algoritmo");
+        botonBuscar = new JButton("aplicar algoritmo");
+        JLabel areaLabel = new JLabel("estado de la busqueda");
         JTextArea areaTexto = new JTextArea(8, 4);
-        JButton botonrecorrido = new JButton("Mostrar recorrido");
+        areaTexto.setText("un vez ejecute un algoritmo el estado de la busqueda aparecera aqui :D");
+        botonrecorrido = new JButton("Mostrar recorrido");botonrecorrido.setEnabled(false);
         areaTexto.setEditable(false);
         JScrollPane scrollTexto = new JScrollPane(areaTexto);
         
+        //eventos 
+        Eventos e = new Eventos();
+        botonBuscar.addActionListener(e);
+        comboAlgoritmo.addActionListener(e);
+        comboTipo.addActionListener(e);
+       
+        
+        panelControl.add(labelTipo);
+        panelControl.add(comboTipo);
         panelControl.add(labelAlgoritmo);
         panelControl.add(comboAlgoritmo);
         panelControl.add(botonBuscar);
+        panelControl.add(areaLabel);
         panelControl.add(scrollTexto);
         panelControl.add(botonrecorrido);
         
@@ -111,4 +136,35 @@ public class Gui extends JFrame{
         mapa.repaint();
         pack(); 
     }
+     class Eventos implements ActionListener{
+    
+         @Override
+         public void actionPerformed(ActionEvent e) {
+             if (e.getSource() == comboTipo) {
+                 comboAlgoritmo.removeAllItems();  // Asegurar que se limpian las opciones previas
+
+                 String tipoAlgo = (String) comboTipo.getSelectedItem();
+                 String[] opciones = tipoAlgo.equals("No Informada") ? algoritmosNI : algoritmosI;
+
+                 for (String elemento : opciones) {
+                     comboAlgoritmo.addItem(elemento);
+                 }
+
+                 comboAlgoritmo.setSelectedIndex(0);  // Seleccionar el primer elemento por defecto
+             }
+             if (e.getSource() == botonBuscar) {
+                 String eleccion = (String) comboAlgoritmo.getSelectedItem();
+                 switch (eleccion) {
+                     case "B x Profundidad" ->
+                         Controlador.aplicarbfs();
+                     default ->
+                         throw new AssertionError();
+                 }
+             }
+         }
+    
 }
+    
+}
+
+
