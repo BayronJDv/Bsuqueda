@@ -40,6 +40,7 @@ public class Gui extends JFrame{
     JComboBox<String> comboTipo;
     JComboBox<String> comboAlgoritmo;
     
+    JTextArea areaTexto;
     public Gui(){
         
         setTitle("Busqueda");
@@ -50,6 +51,10 @@ public class Gui extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
     }
+    
+    public  JTextArea getArea (){
+        return  areaTexto; 
+   }
     
     public void crearGui(){
         
@@ -82,7 +87,7 @@ public class Gui extends JFrame{
         comboAlgoritmo.setMaximumSize(new Dimension(200, 100)); 
         botonBuscar = new JButton("aplicar algoritmo");
         JLabel areaLabel = new JLabel("estado de la busqueda");
-        JTextArea areaTexto = new JTextArea(8, 4);
+        areaTexto = new JTextArea(8, 4);
         areaTexto.setText("un vez ejecute un algoritmo el estado de la busqueda aparecera aqui :D");
         botonrecorrido = new JButton("Mostrar recorrido");botonrecorrido.setEnabled(false);
         areaTexto.setEditable(false);
