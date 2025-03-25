@@ -16,6 +16,7 @@ import Modelo.Laberinto_1;
 import java.awt.GridLayout;
 import java.awt.Image;
 import Controlador.Controlador;
+import java.awt.Component;
 
 /**
  *
@@ -74,7 +75,7 @@ public class Gui extends JFrame{
         // panel de control 
         panelControl = new JPanel();
         panelControl.setLayout(new BoxLayout(panelControl, BoxLayout.Y_AXIS));
-        panelControl.setPreferredSize(new Dimension(200, 400));
+        panelControl.setPreferredSize(new Dimension(250, 500));
         
         JLabel labelTipo = new JLabel("seleccione el tipo de busqueda");
         JLabel labelAlgoritmo = new JLabel("Selecciona un tipo algoritmo:");
@@ -160,9 +161,25 @@ public class Gui extends JFrame{
              if (e.getSource() == botonBuscar) {
                  String eleccion = (String) comboAlgoritmo.getSelectedItem();
                  switch (eleccion) {
-                     case "B x Profundidad" ->{
+                     case "B x Amplitud" ->{
                          Controlador.aplicarbfs(areaTexto);
                          botonrecorrido.setEnabled(true);}
+                     case "B x Profundifad" -> {
+                         //Controlador.aplicarbfs(areaTexto);
+                         //botonrecorrido.setEnabled(true);
+                     }
+                     case "B x Costo" -> {
+                         //Controlador.aplicarbfs(areaTexto);
+                         //botonrecorrido.setEnabled(true);
+                     }
+                     case "Avara" -> {
+                         //Controlador.aplicarbfs(areaTexto);
+                         //botonrecorrido.setEnabled(true);
+                     }
+                     case "A*" -> {
+                         //Controlador.aplicarbfs(areaTexto);
+                         //botonrecorrido.setEnabled(true);
+                     }
                      default ->
                          throw new AssertionError();
                  }
