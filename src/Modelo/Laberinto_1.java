@@ -101,10 +101,10 @@ public class Laberinto_1 {
     public void recuprarruta(nodo ultimo) {
         if (ultimo.padre == null) {
             // Caso base: llegamos al inicio de la ruta
-            coordenadas.add("Inicio: " + ultimo.x + "," + ultimo.y + " (Paquetes: " + ultimo.paquetescolectados + ")");
+            coordenadas.add(ultimo.x + "," + ultimo.y );
         } else {
             // Caso recursivo: imprimir y guardar el paso actual
-            coordenadas.add("Paso: (" + ultimo.x + "," + ultimo.y + ") (Paquetes: " + ultimo.paquetescolectados + ")");
+            coordenadas.add(ultimo.x + "," + ultimo.y );
             recuprarruta(ultimo.padre); // Llamada recursiva
         }
     }

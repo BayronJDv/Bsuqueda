@@ -17,6 +17,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import Controlador.Controlador;
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -35,11 +37,15 @@ public class Gui extends JFrame{
     String[] algoritmosNI = {"B x Amplitud", "B x Profundidad", "B x Csoto"};
     String[] algoritmosI = {"Avara", "A*"};
     
+    List<String> ultimaRuta = new ArrayList<>();
+    
     JPanel mapa;JPanel panelControl;JPanel panelnorte;JPanel panelsur;
     JButton botonBuscar;JButton botonrecorrido;
     
     JComboBox<String> comboTipo;
     JComboBox<String> comboAlgoritmo;
+    
+    JLabel[][] labels;
     
     JTextArea areaTexto;
     public Gui(){
@@ -62,6 +68,8 @@ public class Gui extends JFrame{
         mapa = new JPanel(new GridLayout(10, 10));
         mapa.setPreferredSize(new Dimension(500, 500));
         
+        //labels del laberinto
+        labels = new JLabel[10][10];
         //paneles de adorno 
         panelnorte = new JPanel();
         panelnorte.setBackground(Color.DARK_GRAY);
@@ -80,7 +88,6 @@ public class Gui extends JFrame{
         JLabel labelTipo = new JLabel("seleccione el tipo de busqueda");
         JLabel labelAlgoritmo = new JLabel("Selecciona un tipo algoritmo:");
         
-  
         
         comboTipo = new JComboBox<>(tipo);
         comboTipo.setMaximumSize(new Dimension(200, 100)); 
@@ -97,6 +104,7 @@ public class Gui extends JFrame{
         //eventos 
         Eventos e = new Eventos();
         botonBuscar.addActionListener(e);
+        botonrecorrido.addActionListener(e);
         comboAlgoritmo.addActionListener(e);
         comboTipo.addActionListener(e);
        
@@ -115,32 +123,74 @@ public class Gui extends JFrame{
         add(panelControl, BorderLayout.EAST);
         add(panelsur, BorderLayout.SOUTH);
     }
-    public void pintarlab(Laberinto_1 lab){
+
+// Método para cargar el laberinto en la interfaz
+    public void pintarlab(Laberinto_1 lab) {
         // Primero eliminar componentes anteriores
         mapa.removeAll();
 
+        // Recorremos el laberinto y lo mostramos en el grid
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 int valor = lab.getLab()[i][j];
+
                 // Verificar que el valor está dentro del rango del array de imágenes
                 if (valor >= 0 && valor < imagenes.length) {
                     ImageIcon iconoOriginal = new ImageIcon(imagenes[valor]);
                     Image img = iconoOriginal.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-                    JLabel label = new JLabel(new ImageIcon(img));
-                    
-                    label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                    mapa.add(label);
+                    labels[i][j] = new JLabel(new ImageIcon(img));
                 } else {
-                    // En caso de valor fuera de rango, mostrar un label vacío o con texto
-                    JLabel label = new JLabel("Error");
-                    mapa.add(label);
+                    labels[i][j] = new JLabel("Error"); // En caso de valor fuera de rango
                 }
+
+                labels[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                mapa.add(labels[i][j]); // Agregar la celda al panel
             }
         }
 
+        // Refrescar la interfaz
         mapa.revalidate();
         mapa.repaint();
-        pack(); 
+        pack();
+    }
+    
+    
+    public void mostrarruta() {
+        new Thread(() -> {
+            for (int i = 0; i < ultimaRuta.size() - 1; i++) {
+                // Elemento actual (n)
+                String[] actual = ultimaRuta.get(i).split(",");
+                int x1 = Integer.parseInt(actual[0]);
+                int y1 = Integer.parseInt(actual[1]);
+
+                // Elemento siguiente (n+1)
+                String[] siguiente = ultimaRuta.get(i + 1).split(",");
+                int x2 = Integer.parseInt(siguiente[0]);
+                int y2 = Integer.parseInt(siguiente[1]);
+
+                
+                ImageIcon iconolibreo = new ImageIcon(imagenes[0]);
+                Image imglibre = iconolibreo.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                // Limpiar la casilla anterior (convertir en "libre")
+                labels[x1][y1].setIcon(new ImageIcon(imglibre));
+                
+                ImageIcon iconodron = new ImageIcon(imagenes[2]);
+                Image imgdron = iconodron.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                // Poner el dron en la nueva casilla
+                labels[x2][y2].setIcon(new ImageIcon(imgdron));
+
+                // Refrescar la interfaz
+                mapa.revalidate();
+                mapa.repaint();
+
+                // Pausa para animación
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
      class Eventos implements ActionListener{
     
@@ -160,9 +210,10 @@ public class Gui extends JFrame{
              }
              if (e.getSource() == botonBuscar) {
                  String eleccion = (String) comboAlgoritmo.getSelectedItem();
+                 ultimaRuta.clear();
                  switch (eleccion) {
                      case "B x Amplitud" ->{
-                         Controlador.aplicarbfs(areaTexto);
+                         ultimaRuta = Controlador.aplicarbfs(areaTexto);
                          botonrecorrido.setEnabled(true);}
                      case "B x Profundifad" -> {
                          //Controlador.aplicarbfs(areaTexto);
@@ -184,6 +235,13 @@ public class Gui extends JFrame{
                          throw new AssertionError();
                  }
              }
+             if (e.getSource() == botonrecorrido) {
+                mostrarruta(); // Llamar a la animación del dron
+            }
+             
+             
+             
+             
          }
     
 }

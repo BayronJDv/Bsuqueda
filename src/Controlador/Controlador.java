@@ -5,6 +5,7 @@ import Modelo.Laberinto_1;
 import Modelo.nodo;
 import Vista.Gui;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -55,25 +56,27 @@ public class Controlador {
         }
     }
     
-    public static void aplicarbfs(JTextArea area){
+    public static List<String> aplicarbfs(JTextArea area){
         area.setText("");
         nodo ultimo = miLab.aplicarbfs();
         if (ultimo != null){
            miLab.recuprarruta(ultimo);
-           List<String> coordenadas = miLab.coordenadasRuta();
+           List<String> cordenadas = miLab.coordenadasRuta();
            System.out.println("\nCoordenadas en orden:");
            area.append("Coordenadas obtenidas:");
-           for (String coordenada : coordenadas) {
+           for (String coordenada : cordenadas) {
                 System.out.println(coordenada);
                 area.append("\n"+coordenada);
                 }
-           area.append("\n el algoritmo se ejecuto de maneara correcta "
-                   + "\n puede visualizar la ruta ");
-           
-           miLab.imprimirMatriz();
+           area.append("""
+                       
+                        el algoritmo se ejecuto de maneara correcta 
+                        puede visualizar la ruta """);
+           return cordenadas;
            }else{
            System.out.println("No se encontró ruta, está mal.");
            area.append("No se encontro la ruta; debe haber algun error");
+           return null;
         }
     }
 }
