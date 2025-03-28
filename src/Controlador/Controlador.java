@@ -38,19 +38,6 @@ public class Controlador {
             Gui interfaz = new Gui();
             interfaz.pintarlab(miLab);
             
-            /*
-            nodo ultimo = lab.aplicarbfs();
-            if (ultimo != null) {
-                lab.recuprarruta(ultimo);
-                List<String> coordenadas = lab.coordenadasRuta();
-                System.out.println("\nCoordenadas en orden:");
-                for (String coordenada : coordenadas) {
-                    System.out.println(coordenada);
-                }
-                lab.imprimirMatriz();
-            } else {
-                System.out.println("No se encontró ruta, está mal.");
-            */
         } else {
             System.out.println("No se seleccionó ningún archivo.");
         }

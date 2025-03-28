@@ -43,7 +43,7 @@ public class nodo {
     }
     
     public void expandirse(Queue<nodo> cola){
-        
+       // arriba, derecha, abajo ,izquierda
         int[] dx = {-1, 0, 1, 0};
         int[] dy = {0, 1, 0, -1};
         
