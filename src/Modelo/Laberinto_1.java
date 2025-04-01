@@ -67,7 +67,7 @@ public class Laberinto_1 {
     public nodo aplicarbfs() {
         
         Queue<nodo> cola = new LinkedList<>();
-        visitados.add(inicial.x + "," + inicial.y);
+        visitados.add(inicial.x + ":" + inicial.y);
         for (String visit : visitados){
             System.out.println(visit);
         }
@@ -83,7 +83,7 @@ public class Laberinto_1 {
 
                 actual.paquetescolectados++;// el nodo marca que recolecto un paquete 
                 actual.laberinto[actual.x][actual.y] = 0; // el nodo cambia su estado 
-                actual.visitados.remove(actual.padre.x + "," + actual.padre.y);// si recojo un paquete elimino el nodo del que vengo para poder deolverme 
+                actual.visitados.remove(actual.padre.x + ":" + actual.padre.y);// si recojo un paquete elimino el nodo del que vengo para poder deolverme 
 
             }
             // antes de expandirse verifica si es la meta 

@@ -43,9 +43,9 @@ public class nodo {
     }
     
     public void expandirse(Queue<nodo> cola){
-       // arriba, derecha, abajo ,izquierda
-        int[] dx = {-1, 0, 1, 0};
-        int[] dy = {0, 1, 0, -1};
+       // derecha, izquierda, abajo, arriba 
+       int[] dx = {0, 0, 1, -1};
+       int[] dy = {1, -1, 0, 0};
         
         for (int d = 0; d < 4; d++){
             int nx = this.x+dx[d];
