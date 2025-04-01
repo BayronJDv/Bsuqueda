@@ -21,9 +21,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author HUAWEI
+ * Clase principal de la interfaz gráfica que implementa la visualización del laberinto.
+ * Extiende de JFrame para crear la ventana principal de la aplicación.
+ * 
+ * Funcionalidades principales:
+ * - Visualización del laberinto con sus diferentes elementos (muros, dron, paquetes, etc.)
+ * - Panel de control para selección de algoritmos de búsqueda
+ * - Animación del recorrido del dron
+ * - Visualización de resultados y coordenadas
+ * 
+ * La clase actúa como vista en el patrón MVC, mostrando el estado del laberinto
+ * y permitiendo al usuario interactuar con el sistema a través de la interfaz gráfica.
+ * Se comunica con el Controlador para ejecutar las acciones seleccionadas por el usuario.
  */
+
 public class Gui extends JFrame{
     
     String[] imagenes = {
@@ -34,7 +45,7 @@ public class Gui extends JFrame{
     "src/Vista/images/paquete.png"
 };
     String[] tipo = {"Informada", "No Informada"};
-    String[] algoritmosNI = {"B x Amplitud", "B x Profundidad", "B x Csoto"};
+    String[] algoritmosNI = {"B x Amplitud", "B x Profundidad", "B x Costo"};
     String[] algoritmosI = {"Avara", "A*"};
     
     List<String> ultimaRuta = new ArrayList<>();
@@ -183,7 +194,7 @@ public class Gui extends JFrame{
                 mapa.revalidate();
                 mapa.repaint();
 
-                // Pausa para animación
+                // Pausa para aparentar una animacion 
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -213,15 +224,15 @@ public class Gui extends JFrame{
                  ultimaRuta.clear();
                  switch (eleccion) {
                      case "B x Amplitud" ->{
-                         ultimaRuta = Controlador.aplicarbfs(areaTexto);
+                         ultimaRuta = Controlador.aplicarBFS(areaTexto);
                          botonrecorrido.setEnabled(true);}
-                     case "B x Profundifad" -> {
-                         //Controlador.aplicarbfs(areaTexto);
-                         //botonrecorrido.setEnabled(true);
+                     case "B x Profundidad" -> {
+                         ultimaRuta = Controlador.aplicarDFS(areaTexto);
+                         botonrecorrido.setEnabled(true);
                      }
                      case "B x Costo" -> {
-                         //Controlador.aplicarbfs(areaTexto);
-                         //botonrecorrido.setEnabled(true);
+                         ultimaRuta = Controlador.aplicarUCS(areaTexto);
+                         botonrecorrido.setEnabled(true);
                      }
                      case "Avara" -> {
                          //Controlador.aplicarbfs(areaTexto);
