@@ -1,22 +1,15 @@
-
 package Vista;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import javax.swing.*;
-import javax.swing.border.Border;
 import Modelo.Laberinto_1;
 import java.awt.GridLayout;
 import java.awt.Image;
 import Controlador.Controlador;
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,13 +29,13 @@ import java.util.List;
  */
 
 public class Gui extends JFrame{
-    
     String[] imagenes = {
     "src/Vista/images/libre.png",
     "src/Vista/images/muro.png", 
     "src/Vista/images/dron.jpg",
     "src/Vista/images/campo.png",
-    "src/Vista/images/paquete.png"
+    "src/Vista/images/paquete.png",
+    "src/Vista/images/amarillo.png",
 };
     String[] tipo = {"Informada", "No Informada"};
     String[] algoritmosNI = {"B x Amplitud", "B x Profundidad", "B x Costo"};
@@ -179,15 +172,14 @@ public class Gui extends JFrame{
                 int x2 = Integer.parseInt(siguiente[0]);
                 int y2 = Integer.parseInt(siguiente[1]);
 
-                
-                ImageIcon iconolibreo = new ImageIcon(imagenes[0]);
-                Image imglibre = iconolibreo.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-                // Limpiar la casilla anterior (convertir en "libre")
-                labels[x1][y1].setIcon(new ImageIcon(imglibre));
-                
+                // Pintar la casilla anterior de amarillo
+                ImageIcon iconoAmarillo = new ImageIcon(imagenes[5]); // índice 5 para amarillo
+                Image imgAmarillo = iconoAmarillo.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                labels[x1][y1].setIcon(new ImageIcon(imgAmarillo));
+
+                // Poner el dron en la nueva casilla
                 ImageIcon iconodron = new ImageIcon(imagenes[2]);
                 Image imgdron = iconodron.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-                // Poner el dron en la nueva casilla
                 labels[x2][y2].setIcon(new ImageIcon(imgdron));
 
                 // Refrescar la interfaz
@@ -235,8 +227,8 @@ public class Gui extends JFrame{
                          botonrecorrido.setEnabled(true);
                      }
                      case "Avara" -> {
-                         //Controlador.aplicarbfs(areaTexto);
-                         //botonrecorrido.setEnabled(true);
+                         ultimaRuta = Controlador.aplicarAvara(areaTexto);
+                         botonrecorrido.setEnabled(true);
                      }
                      case "A*" -> {
                          //Controlador.aplicarbfs(areaTexto);
@@ -247,7 +239,9 @@ public class Gui extends JFrame{
                  }
              }
              if (e.getSource() == botonrecorrido) {
-                mostrarruta(); // Llamar a la animación del dron
+                Laberinto_1 copiaInicial = new Laberinto_1(Controlador.laberintoInicial);
+                pintarlab(copiaInicial);
+                mostrarruta();
             }
              
              
@@ -258,5 +252,3 @@ public class Gui extends JFrame{
 }
     
 }
-
-
