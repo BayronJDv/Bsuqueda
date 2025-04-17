@@ -1,6 +1,9 @@
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -120,6 +123,69 @@ public class nodo {
         }
     }
     
+    public int calcularHeuristica(int totalPaquetes) {
+    // Verific si ya se han recolectado todos los paquetes
+    if (this.paquetescolectados == totalPaquetes) return 0;
+
+    List<int[]> paquetes = new ArrayList<>();
+
+    // Busca paquetes restantes en el laberinto
+    for (int i = 0; i < laberinto.length; i++) {
+        for (int j = 0; j < laberinto[0].length; j++) {
+            if (laberinto[i][j] == 4) {
+                paquetes.add(new int[]{i, j});
+            }
+        }
+    }
+
+    if (paquetes.isEmpty()) return 0;
+
+    // Paso 1: calcula distancia al paquete más cercano
+    int distanciaMinAgente = Integer.MAX_VALUE;
+    for (int[] paquete : paquetes) {
+        int dist = Math.abs(this.x - paquete[0]) + Math.abs(this.y - paquete[1]);
+        if (dist < distanciaMinAgente) {
+            distanciaMinAgente = dist;
+        }
+    }
+
+    // Paso 2: construir MST entre los paquetes
+    int n = paquetes.size();
+    boolean[] visitado = new boolean[n];
+    int[] minDist = new int[n];
+    Arrays.fill(minDist, Integer.MAX_VALUE);
+    minDist[0] = 0;
+    int costoMST = 0;
+
+    for (int i = 0; i < n; i++) {
+        int u = -1;
+        int min = Integer.MAX_VALUE;
+
+        for (int j = 0; j < n; j++) {
+            if (!visitado[j] && minDist[j] < min) {
+                min = minDist[j];
+                u = j;
+            }
+        }
+
+        visitado[u] = true;
+        costoMST += minDist[u];
+
+        for (int v = 0; v < n; v++) {
+            if (!visitado[v]) {
+                int distancia = Math.abs(paquetes.get(u)[0] - paquetes.get(v)[0]) +
+                                Math.abs(paquetes.get(u)[1] - paquetes.get(v)[1]);
+                if (distancia < minDist[v]) {
+                    minDist[v] = distancia;
+                }
+            }
+        }
+    }
+
+    return distanciaMinAgente + costoMST;
+}
+
+
     public void imprimirMatriz() {
         System.out.println("matriz del nodo :");
         for (int[] laberinto1 : laberinto) {

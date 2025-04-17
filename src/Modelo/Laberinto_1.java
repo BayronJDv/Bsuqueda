@@ -48,6 +48,32 @@ public class Laberinto_1 {
     public List<String> coordenadas = new ArrayList<>();
     Set<String> visitados =new HashSet<>();
     
+    // Constructor de la clase Laberinto_1
+    public Laberinto_1() {
+        this.filas = 10;
+        this.columnas = 10;
+        this.casillas = new int[filas][columnas];
+        this.totalpaq = 0;
+        this.coordenadas = new ArrayList<>();
+        this.visitados = new HashSet<>();
+        this.inicial = null;
+    }
+
+    // Constructor de copia
+    public Laberinto_1(Laberinto_1 original) {
+        this.filas = original.filas;
+        this.columnas = original.columnas;
+        this.casillas = new int[filas][columnas];
+        for (int i = 0; i < filas; i++) {
+            System.arraycopy(original.casillas[i], 0, this.casillas[i], 0, columnas);
+        }
+        this.totalpaq = original.totalpaq;
+        this.coordenadas = new ArrayList<>(original.coordenadas);
+        this.visitados = new HashSet<>(original.visitados);
+        // Si necesitas copiar el nodo inicial, hazlo aquí (opcional)
+        this.inicial = original.inicial; // O haz una copia profunda si es necesario
+    }
+    
     // metodo que devuelbe el laberinto 
     public int[][] getLab() {
         return this.casillas;
@@ -185,6 +211,40 @@ public class Laberinto_1 {
         return null;
     }
 
+    // Método para aplicar el algoritmo de búsqueda avar (GBFS)
+    public nodo aplicarGBFS() {
+        PriorityQueue<nodo> cola = new PriorityQueue<>(
+            Comparator.comparingInt(n -> n.calcularHeuristica(totalpaq))
+        );
+    
+        visitados.add(inicial.x + ":" + inicial.y);
+        nodo raiz = new nodo(inicial.x, inicial.y, null, 0, casillas, new HashSet<>(visitados));
+        raiz.getInfo();
+        cola.add(raiz);
+    
+        while (!cola.isEmpty()) {
+            nodo actual = cola.poll();
+    
+            // Si este nodo ha recogido todos los paquetes, retornar 0
+            if (actual.laberinto[actual.x][actual.y] == 4) {
+                actual.paquetescolectados++;
+                actual.laberinto[actual.x][actual.y] = 0;
+    
+                if (actual.padre != null) {
+                    actual.visitados.remove(actual.padre.x + ":" + actual.padre.y);
+                }
+            }
+    
+            if (actual.paquetescolectados == totalpaq) {
+                return actual;
+            }
+    
+            actual.expandirse(cola);
+        }
+    
+        return null;
+    }
+    
     public void recuprarruta(nodo ultimo) {
         if (ultimo.padre == null) {
             coordenadas.add(ultimo.x + "," + ultimo.y );

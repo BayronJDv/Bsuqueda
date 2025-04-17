@@ -27,6 +27,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Controlador {
     static Gui gui;
     static Laberinto_1 miLab;
+    public static Laberinto_1 laberintoInicial;
     
     public static void iniciar(){
         
@@ -47,6 +48,7 @@ public class Controlador {
             File selectedFile = fileChooser.getSelectedFile();
             miLab.leertxt(selectedFile);
             miLab.imprimirMatriz();
+            laberintoInicial = new Laberinto_1(miLab); // <-- Guarda el estado inicial
             Gui interfaz = new Gui();
             interfaz.pintarlab(miLab);
             
@@ -125,4 +127,30 @@ public class Controlador {
            return null;
         }
     }
+    
+    public static List<String> aplicarAvara(JTextArea area) {
+        area.setText("");
+        nodo ultimo = miLab.aplicarGBFS(); 
+        if (ultimo != null){
+            miLab.recuprarruta(ultimo);
+            List<String> coordenadas = miLab.coordenadasRuta();
+            System.out.println("\nCoordenadas en orden:");
+            area.append("Coordenadas obtenidas:");
+            for (String coordenada : coordenadas) {
+                System.out.println(coordenada);
+                area.append("\n" + coordenada);
+            }
+            area.append("""
+    
+                            
+                            El algoritmo Avara se ejecutó correctamente.
+                            Puede visualizar la ruta.
+                        """);
+            return coordenadas;
+        } else {
+            System.out.println("No se encontró ruta con Avara.");
+            area.append("No se encontró la ruta con Avara; puede haber un error en el laberinto.");
+            return null;
+        }
+    }    
 }
