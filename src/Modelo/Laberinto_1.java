@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
+import java.util.AbstractMap;
 
 /**
  * Clase que representa un laberinto para un problema de búsqueda de paquetes.
@@ -116,7 +117,7 @@ public class Laberinto_1 {
         System.out.println("el numero total de paquetes es : " + totalpaq);
     }
 
-    public nodo aplicarBFS() {
+    public AbstractMap.SimpleEntry<nodo, Integer> aplicarBFS() {
         
         Queue<nodo> cola = new LinkedList<>();
         visitados.add(inicial.x + ":" + inicial.y);
@@ -126,7 +127,7 @@ public class Laberinto_1 {
         nodo raiz = new nodo(inicial.x, inicial.y, null,0, casillas, visitados); // Pasamos el laberinto inicial
         raiz.getInfo();
         cola.add(raiz);
-
+        int expand = 0;
         while (!cola.isEmpty()) {
             nodo actual = cola.poll();
 
@@ -140,9 +141,9 @@ public class Laberinto_1 {
             }
             // antes de expandirse verifica si es la meta 
             if (actual.paquetescolectados == this.totalpaq) {
-                return actual;
+                return new AbstractMap.SimpleEntry<>(actual, expand);
             }
-            
+            expand +=1;
             actual.expandirse(cola);
             
         }
@@ -150,7 +151,7 @@ public class Laberinto_1 {
         return null;
     }
 
-    public nodo aplicarUCS() {
+    public AbstractMap.SimpleEntry<nodo, Integer> aplicarUCS() {
 
         PriorityQueue<nodo> cola = new PriorityQueue<>(Comparator.comparingInt(n -> n.costo));
         visitados.add(inicial.x + ":" + inicial.y);
@@ -160,7 +161,7 @@ public class Laberinto_1 {
         nodo raiz = new nodo(inicial.x, inicial.y, null,0, casillas, visitados); // Pasamos el laberinto inicial
         raiz.getInfo();
         cola.add(raiz);
-
+        int expand = 0;
         while (!cola.isEmpty()) {
             nodo actual = cola.poll();
 
@@ -173,15 +174,15 @@ public class Laberinto_1 {
             
             // antes de expandirse verifica si es la meta 
             if (actual.paquetescolectados == totalpaq) {
-                return actual;
+                return new AbstractMap.SimpleEntry<>(actual, expand);
             }
-            
+            expand +=1;
             actual.expandirse(cola);
         }
                
         return null;
     }
-    public nodo aplicarDFS() {
+    public AbstractMap.SimpleEntry<nodo, Integer> aplicarDFS() {
         Stack<nodo> pila = new Stack<>();
         visitados.add(inicial.x + ":" + inicial.y);
         for (String visit : visitados){
@@ -190,7 +191,7 @@ public class Laberinto_1 {
         nodo raiz = new nodo(inicial.x, inicial.y, null, 0, casillas, visitados);
         raiz.getInfo();
         pila.push(raiz);
-
+        int expand = 0;
         while (!pila.isEmpty()) {
             nodo actual = pila.pop();
 
@@ -202,9 +203,9 @@ public class Laberinto_1 {
             
             // antes de expandirse verifica si es la meta 
             if (actual.paquetescolectados == totalpaq) {
-                return actual;
+                return new AbstractMap.SimpleEntry<>(actual, expand);
             }
-            
+            expand +=1;
             actual.expandirseDFS(pila);
         }
                
@@ -212,7 +213,7 @@ public class Laberinto_1 {
     }
 
     // Método para aplicar el algoritmo de búsqueda avar (GBFS)
-    public nodo aplicarGBFS() {
+    public AbstractMap.SimpleEntry<nodo, Integer> aplicarGBFS() {
         PriorityQueue<nodo> cola = new PriorityQueue<>(
             Comparator.comparingInt(n -> n.calcularHeuristica(totalpaq))
         );
@@ -221,7 +222,7 @@ public class Laberinto_1 {
         nodo raiz = new nodo(inicial.x, inicial.y, null, 0, casillas, new HashSet<>(visitados));
         raiz.getInfo();
         cola.add(raiz);
-    
+        int expand = 0;
         while (!cola.isEmpty()) {
             nodo actual = cola.poll();
     
@@ -236,9 +237,43 @@ public class Laberinto_1 {
             }
     
             if (actual.paquetescolectados == totalpaq) {
-                return actual;
+                return new AbstractMap.SimpleEntry<>(actual, expand);
+            }
+            expand +=1;
+            actual.expandirse(cola);
+        }
+    
+        return null;
+    }
+    
+    public AbstractMap.SimpleEntry<nodo, Integer> aplicarASTAR() {
+        PriorityQueue<nodo> cola = new PriorityQueue<>(
+            Comparator.comparingInt(n -> n.calcularHeuristica(totalpaq) + n.costo)
+        );
+    
+        visitados.add(inicial.x + ":" + inicial.y);
+        nodo raiz = new nodo(inicial.x, inicial.y, null, 0, casillas, new HashSet<>(visitados));
+        raiz.getInfo();
+        cola.add(raiz);
+        int expand = 0;
+        while (!cola.isEmpty()) {
+            nodo actual = cola.poll();
+    
+            // Si este nodo ha recogido todos los paquetes, retornar 0
+            if (actual.laberinto[actual.x][actual.y] == 4) {
+                actual.paquetescolectados++;
+                actual.laberinto[actual.x][actual.y] = 0;
+    
+                if (actual.padre != null) {
+                    actual.visitados.remove(actual.padre.x + ":" + actual.padre.y);
+                }
             }
     
+            if (actual.paquetescolectados == totalpaq) {
+                return new AbstractMap.SimpleEntry<>(actual, expand);
+            }
+            //Cantidad nodos expandidos
+            expand +=1;
             actual.expandirse(cola);
         }
     

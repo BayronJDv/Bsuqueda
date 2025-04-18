@@ -231,8 +231,8 @@ public class Gui extends JFrame{
                          botonrecorrido.setEnabled(true);
                      }
                      case "A*" -> {
-                         //Controlador.aplicarbfs(areaTexto);
-                         //botonrecorrido.setEnabled(true);
+                         ultimaRuta = Controlador.aplicarAstar(areaTexto);
+                         botonrecorrido.setEnabled(true);
                      }
                      default ->
                          throw new AssertionError();

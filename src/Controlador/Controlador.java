@@ -5,6 +5,7 @@ import Modelo.nodo;
 import Vista.Gui;
 import java.io.File;
 import java.util.List;
+import java.util.AbstractMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -59,20 +60,41 @@ public class Controlador {
     
     public static List<String> aplicarBFS(JTextArea area){ // busqueda por amplitud
         area.setText("");
-        nodo ultimo = miLab.aplicarBFS();
+        long inicio = System.nanoTime();
+        
+        AbstractMap.SimpleEntry<nodo, Integer> resultado = miLab.aplicarBFS();
+        
+        nodo ultimo = resultado.getKey();
+        int nodosExpandidos = resultado.getValue();
+        long fin = System.nanoTime();
+        long tiempoTranscurrido = fin - inicio;
+        double tiempoEnSegundos = tiempoTranscurrido / 1000000000.0;
+        
         if (ultimo != null){
            miLab.recuprarruta(ultimo);
            List<String> cordenadas = miLab.coordenadasRuta();
+           area.append(String.format("""
+                                      
+                            El algoritmo por profundidad se ejecutó correctamente           
+                              - Tiempo de algoritmo: %.6f seg. 
+                              - Nodos expandidos: %d.
+                              - Profundidad alcanzada: %d.
+                              - Costo Solucion: %d.        
+                                      
+                           """, tiempoEnSegundos,nodosExpandidos,ultimo.getDeph(),ultimo.getCosto()));
+           
+           
            System.out.println("\nCoordenadas en orden:");
            area.append("Coordenadas obtenidas:");
            for (String coordenada : cordenadas) {
                 System.out.println(coordenada);
                 area.append("\n"+coordenada);
                 }
-           area.append("""
-                       
-                        el algoritmo se ejecuto de maneara correcta 
-                        puede visualizar la ruta """);
+           area.append("""    
+                        
+                        
+                                   *Puede visualizar la ruta.*
+                        """);
            return cordenadas;
            }else{
            System.out.println("No se encontró ruta, está mal.");
@@ -82,20 +104,40 @@ public class Controlador {
     }
     public static List<String> aplicarUCS(JTextArea area){ // busqueda por costo 
         area.setText("");
-        nodo ultimo = miLab.aplicarUCS();
+        long inicio = System.nanoTime();
+        
+        AbstractMap.SimpleEntry<nodo, Integer> resultado = miLab.aplicarUCS();
+        
+        nodo ultimo = resultado.getKey();
+        int nodosExpandidos = resultado.getValue();
+        long fin = System.nanoTime();
+        long tiempoTranscurrido = fin - inicio;
+        double tiempoEnSegundos = tiempoTranscurrido / 1000000000.0;
+        
         if (ultimo != null){
            miLab.recuprarruta(ultimo);
            List<String> cordenadas = miLab.coordenadasRuta();
+           area.append(String.format("""
+                                      
+                            El algoritmo por profundidad se ejecutó correctamente           
+                              - Tiempo de algoritmo: %.6f seg. 
+                              - Nodos expandidos: %d.
+                              - Profundidad alcanzada: %d.
+                              - Costo Solucion: %d.        
+                                      
+                           """, tiempoEnSegundos,nodosExpandidos,ultimo.getDeph(),ultimo.getCosto()));
+           
            System.out.println("\nCoordenadas en orden:");
            area.append("Coordenadas obtenidas:");
            for (String coordenada : cordenadas) {
                 System.out.println(coordenada);
                 area.append("\n"+coordenada);
                 }
-           area.append("""
-                       
-                        el algoritmo se ejecuto de maneara correcta 
-                        puede visualizar la ruta """);
+           area.append("""    
+                        
+                        
+                                   *Puede visualizar la ruta.*
+                        """);
            return cordenadas;
            }else{
            System.out.println("No se encontró ruta, está mal.");
@@ -106,20 +148,41 @@ public class Controlador {
 
     public static List<String> aplicarDFS(JTextArea area){ // busqueda por profundidad
         area.setText("");
-        nodo ultimo = miLab.aplicarDFS();
+        long inicio = System.nanoTime();
+        
+        AbstractMap.SimpleEntry<nodo, Integer> resultado = miLab.aplicarDFS();
+        
+        nodo ultimo = resultado.getKey();
+        int nodosExpandidos = resultado.getValue();
+        long fin = System.nanoTime();
+        long tiempoTranscurrido = fin - inicio;
+        double tiempoEnSegundos = tiempoTranscurrido / 1000000000.0;
+        
         if (ultimo != null){
            miLab.recuprarruta(ultimo);
            List<String> cordenadas = miLab.coordenadasRuta();
+           
+           area.append(String.format("""
+                                      
+                            El algoritmo por profundidad se ejecutó correctamente           
+                              - Tiempo de algoritmo: %.6f seg. 
+                              - Nodos expandidos: %d.
+                              - Profundidad alcanzada: %d.
+                              - Costo Solucion: %d.        
+                                      
+                           """, tiempoEnSegundos,nodosExpandidos,ultimo.getDeph(),ultimo.getCosto()));
+           
            System.out.println("\nCoordenadas en orden:");
            area.append("Coordenadas obtenidas:");
            for (String coordenada : cordenadas) {
                 System.out.println(coordenada);
                 area.append("\n"+coordenada);
                 }
-           area.append("""
-                       
-                        el algoritmo se ejecuto de maneara correcta 
-                        puede visualizar la ruta """);
+           area.append("""    
+                        
+                        
+                                   *Puede visualizar la ruta.*
+                        """);
            return cordenadas;
            }else{
            System.out.println("No se encontró ruta, está mal.");
@@ -130,21 +193,39 @@ public class Controlador {
     
     public static List<String> aplicarAvara(JTextArea area) {
         area.setText("");
-        nodo ultimo = miLab.aplicarGBFS(); 
+        long inicio = System.nanoTime();
+        
+        AbstractMap.SimpleEntry<nodo, Integer> resultado = miLab.aplicarGBFS(); 
+        
+        nodo ultimo = resultado.getKey();
+        int nodosExpandidos = resultado.getValue();
+        long fin = System.nanoTime();
+        long tiempoTranscurrido = fin - inicio;
+        double tiempoEnSegundos = tiempoTranscurrido / 1000000000.0;
+        
         if (ultimo != null){
             miLab.recuprarruta(ultimo);
             List<String> coordenadas = miLab.coordenadasRuta();
+            area.append(String.format("""
+                                      
+                            El algoritmo Avara se ejecutó correctamente           
+                              - Tiempo de algoritmo: %.6f seg. 
+                              - Nodos expandidos: %d.
+                              - Profundidad alcanzada: %d.
+                              - Costo Solucion: %d.        
+                                      
+                           """, tiempoEnSegundos,nodosExpandidos,ultimo.getDeph(),ultimo.getCosto()));
+            
             System.out.println("\nCoordenadas en orden:");
             area.append("Coordenadas obtenidas:");
             for (String coordenada : coordenadas) {
                 System.out.println(coordenada);
                 area.append("\n" + coordenada);
             }
-            area.append("""
-    
-                            
-                            El algoritmo Avara se ejecutó correctamente.
-                            Puede visualizar la ruta.
+            area.append("""    
+                        
+                        
+                                   *Puede visualizar la ruta.*
                         """);
             return coordenadas;
         } else {
@@ -152,5 +233,51 @@ public class Controlador {
             area.append("No se encontró la ruta con Avara; puede haber un error en el laberinto.");
             return null;
         }
-    }    
+    }
+
+    public static List<String> aplicarAstar(JTextArea area) {
+        area.setText("");
+        long inicio = System.nanoTime();
+        
+        //nodo ultimo = miLab.aplicarASTAR();
+        AbstractMap.SimpleEntry<nodo, Integer> resultado = miLab.aplicarASTAR();
+        
+        nodo ultimo = resultado.getKey();
+        int nodosExpandidos = resultado.getValue();
+        long fin = System.nanoTime();
+        long tiempoTranscurrido = fin - inicio;
+        double tiempoEnSegundos = tiempoTranscurrido / 1000000000.0;
+        
+        if (ultimo != null){
+            miLab.recuprarruta(ultimo);
+            List<String> coordenadas = miLab.coordenadasRuta();
+            
+            area.append(String.format("""
+                                      
+                            El algoritmo A* se ejecutó correctamente           
+                              - Tiempo de algoritmo: %.6f seg. 
+                              - Nodos expandidos: %d.
+                              - Profundidad alcanzada: %d.
+                              - Costo Solucion: %d.        
+                                      
+                           """, tiempoEnSegundos,nodosExpandidos,ultimo.getDeph(),ultimo.getCosto()));
+            
+            System.out.println("\nCoordenadas en orden:");
+            area.append("   Coordenadas obtenidas:");
+            for (String coordenada : coordenadas) {
+                System.out.println(coordenada);
+                area.append("\n      " + coordenada);
+            }
+            area.append("""    
+                        
+                        
+                                   *Puede visualizar la ruta.*
+                        """);
+            return coordenadas;
+        } else {
+            System.out.println("No se encontró ruta con A*.");
+            area.append("No se encontró la ruta con A*; puede haber un error en el laberinto.");
+            return null;
+        }
+    } 
 }

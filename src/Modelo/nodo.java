@@ -51,6 +51,13 @@ public class nodo {
             }
             this.profundidad = (padre == null) ? 0 : padre.profundidad + 1;
     }
+        
+    public int getDeph(){
+        return this.profundidad;
+    }
+    public int getCosto(){
+        return this.costo;
+    }
     
     public void getInfo(){
         System.out.println("informacion del nodo ");
