@@ -213,7 +213,7 @@ public class Gui extends JFrame{
              }
              if (e.getSource() == botonBuscar) {
                  String eleccion = (String) comboAlgoritmo.getSelectedItem();
-                 ultimaRuta.clear();
+                 if (ultimaRuta != null ) {ultimaRuta.clear();}
                  switch (eleccion) {
                      case "B x Amplitud" ->{
                          ultimaRuta = Controlador.aplicarBFS(areaTexto);

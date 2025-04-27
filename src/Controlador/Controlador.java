@@ -52,7 +52,16 @@ public class Controlador {
             laberintoInicial = new Laberinto_1(miLab); // <-- Guarda el estado inicial
             Gui interfaz = new Gui();
             interfaz.pintarlab(miLab);
-            
+            if (laberintoInicial.totalpaq == 0) {
+                JOptionPane.showMessageDialog(
+                null,
+                "El ambiente ingresado no es valido",
+                "ERROR",
+                JOptionPane.ERROR_MESSAGE
+                );
+                
+                System.exit(0);
+            }
         } else {
             System.out.println("No se seleccionó ningún archivo.");
         }
@@ -63,6 +72,11 @@ public class Controlador {
         long inicio = System.nanoTime();
         
         AbstractMap.SimpleEntry<nodo, Integer> resultado = miLab.aplicarBFS();
+
+        if (resultado == null) {
+            area.append("Error: No se encuentra sln");
+            return null;
+        }
         
         nodo ultimo = resultado.getKey();
         int nodosExpandidos = resultado.getValue();
@@ -108,6 +122,11 @@ public class Controlador {
         
         AbstractMap.SimpleEntry<nodo, Integer> resultado = miLab.aplicarUCS();
         
+        if (resultado == null) {
+            area.append("Error: No se encuentra sln");
+            return null;
+        }
+        
         nodo ultimo = resultado.getKey();
         int nodosExpandidos = resultado.getValue();
         long fin = System.nanoTime();
@@ -119,7 +138,7 @@ public class Controlador {
            List<String> cordenadas = miLab.coordenadasRuta();
            area.append(String.format("""
                                       
-                            El algoritmo por profundidad se ejecutó correctamente           
+                            El algoritmo por costo se ejecutó correctamente           
                               - Tiempo de algoritmo: %.6f seg. 
                               - Nodos expandidos: %d.
                               - Profundidad alcanzada: %d.
@@ -151,7 +170,10 @@ public class Controlador {
         long inicio = System.nanoTime();
         
         AbstractMap.SimpleEntry<nodo, Integer> resultado = miLab.aplicarDFS();
-        
+        if (resultado == null) {
+            area.append("Error: No se encuentra sln");
+            return null;
+        }
         nodo ultimo = resultado.getKey();
         int nodosExpandidos = resultado.getValue();
         long fin = System.nanoTime();
@@ -196,7 +218,10 @@ public class Controlador {
         long inicio = System.nanoTime();
         
         AbstractMap.SimpleEntry<nodo, Integer> resultado = miLab.aplicarGBFS(); 
-        
+        if (resultado == null) {
+            area.append("Error: No se encuentra sln");
+            return null;
+        }
         nodo ultimo = resultado.getKey();
         int nodosExpandidos = resultado.getValue();
         long fin = System.nanoTime();
@@ -241,7 +266,10 @@ public class Controlador {
         
         //nodo ultimo = miLab.aplicarASTAR();
         AbstractMap.SimpleEntry<nodo, Integer> resultado = miLab.aplicarASTAR();
-        
+        if (resultado == null) {
+            area.append("Error: No se encuentra sln");
+            return null;
+        }
         nodo ultimo = resultado.getKey();
         int nodosExpandidos = resultado.getValue();
         long fin = System.nanoTime();

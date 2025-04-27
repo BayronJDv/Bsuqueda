@@ -45,7 +45,7 @@ public class Laberinto_1 {
     int columnas = 10;
     int[][] casillas = new int[10][10];
     public nodo inicial = null;
-    int totalpaq = 0;
+    public int totalpaq = 0;
     public List<String> coordenadas = new ArrayList<>();
     Set<String> visitados =new HashSet<>();
     
@@ -136,7 +136,7 @@ public class Laberinto_1 {
 
                 actual.paquetescolectados++;// el nodo marca que recolecto un paquete 
                 actual.laberinto[actual.x][actual.y] = 0; // el nodo cambia su estado 
-                actual.visitados.remove(actual.padre.x + ":" + actual.padre.y);// si recojo un paquete elimino el nodo del que vengo para poder deolverme 
+                actual.visitados.clear();// si recojo un paquete elimino el nodo del que vengo para poder deolverme 
 
             }
             // antes de expandirse verifica si es la meta 
@@ -169,7 +169,7 @@ public class Laberinto_1 {
             if (actual.laberinto[actual.x][actual.y] == 4) {
                 actual.paquetescolectados++; // el nodo marca que recolecto un paquete 
                 actual.laberinto[actual.x][actual.y] = 0; // el nodo cambia su estado 
-                actual.visitados.remove(actual.padre.x + ":" + actual.padre.y); // si recojo un paquete elimino el nodo del que vengo para poder deolverme 
+                actual.visitados.clear(); // si recojo un paquete elimino el nodo del que vengo para poder deolverme 
             }
             
             // antes de expandirse verifica si es la meta 
@@ -198,7 +198,7 @@ public class Laberinto_1 {
             if (actual.laberinto[actual.x][actual.y] == 4) {
                 actual.paquetescolectados++; // el nodo marca que recolecto un paquete 
                 actual.laberinto[actual.x][actual.y] = 0; // el nodo cambia su estado 
-                actual.visitados.remove(actual.padre.x + ":" + actual.padre.y); // si recojo un paquete elimino el nodo del que vengo para poder devolverme 
+                actual.visitados.clear(); // si recojo un paquete elimino el nodo del que vengo para poder devolverme 
             }
             
             // antes de expandirse verifica si es la meta 
@@ -232,7 +232,7 @@ public class Laberinto_1 {
                 actual.laberinto[actual.x][actual.y] = 0;
     
                 if (actual.padre != null) {
-                    actual.visitados.remove(actual.padre.x + ":" + actual.padre.y);
+                    actual.visitados.clear();
                 }
             }
     
@@ -265,7 +265,7 @@ public class Laberinto_1 {
                 actual.laberinto[actual.x][actual.y] = 0;
     
                 if (actual.padre != null) {
-                    actual.visitados.remove(actual.padre.x + ":" + actual.padre.y);
+                    actual.visitados.clear();
                 }
             }
     
